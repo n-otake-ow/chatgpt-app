@@ -1,1 +1,1 @@
-# ChatGPT-app
+# chatgpt-app
