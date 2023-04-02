@@ -128,6 +128,10 @@ resource "google_bigquery_table" "query_log" {
       type = "TIMESTAMP"
     },
     {
+      name = "model"
+      type = "STRING"
+    },
+    {
       name = "choices"
       type = "RECORD"
       mode = "REPEATED"
@@ -155,7 +159,6 @@ resource "google_bigquery_table" "query_log" {
           name = "finish_reason"
           type = "STRING"
         },
-
       ]
     },
     {

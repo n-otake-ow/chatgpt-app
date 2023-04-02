@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import openai
+from google.cloud import bigquery
 
 
 # NOTE: set True for local development
@@ -51,7 +52,7 @@ def get_answer(language: str, word: str) -> str:
     question_text = ",".join(questions)
 
     # see https://platform.openai.com/docs/guides/chat/introduction
-    res = openai.ChatCompletion.create(
+    response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -70,9 +71,28 @@ def get_answer(language: str, word: str) -> str:
             },
         ],
     )
+    log = response.copy()
+    log["language"] = language
+    log["word"] = word
+
+    insert_query_log(log)
+
     if DEBUG_MODE:
-        st.json(res)
-    return res["choices"][0]["message"]["content"]
+        st.json(response)
+    return response["choices"][0]["message"]["content"]
+
+
+# derived from https://cloud.google.com/bigquery/docs/samples/bigquery-table-insert-rows
+def insert_query_log(log: dict) -> None:
+    client = bigquery.Client()
+    table_id = "promising-haiku-204015.chatgpt_app.query_log"
+    errors = client.insert_rows_json(table_id, [log])
+
+    if errors == []:
+        if DEBUG_MODE:
+            st.write("New rows have been added.")
+    else:
+        st.write("Encountered errors while inserting rows: {}".format(errors))
 
 
 def main() -> None:
@@ -83,6 +103,7 @@ def main() -> None:
         "ドイツ語",
         "イタリア語",
         "スペイン語",
+        "ラテン語",
         "英語",
         "日本語",
     )

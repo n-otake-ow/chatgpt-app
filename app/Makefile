@@ -2,6 +2,7 @@ include .env
 
 SERVICE_NAME := chatgpt-app
 SERVER_IMAGE_NAME := app
+PROJECT_ID := $(shell gcloud config get-value project)
 IMAGE_URL := $(GAR_HOST)/$(PROJECT_ID)/$(SERVICE_NAME)/$(SERVER_IMAGE_NAME)
 .DEFAULT_GOAL   := help
 
@@ -11,7 +12,7 @@ build:
 	$(eval COMMIT_HASH := $(shell git rev-parse HEAD | cut -c 1-7))
 	DOCKER_BUILDKIT=1 docker build \
 		-f .docker/Dockerfile \
-		-t $(SERVICE_NAME)-$(SERVER_IMAGE_NAME) \
+		-t $(SERVICE_NAME) \
 		-t $(IMAGE_URL):latest \
 		-t $(IMAGE_URL):$(COMMIT_HASH) \
 		.
@@ -26,9 +27,16 @@ push:
 deploy:
 	gcloud run deploy $(SERVICE_NAME) --image $(IMAGE_URL) --region $(LOCATION)
 
+.PHONY: release
+release: build push deploy
+
 .PHONY: describe
 describe:
 	gcloud run services describe $(SERVICE_NAME)  --region=$(LOCATION)
+
+.PHONY: login-gcloud
+login-gcloud:
+	gcloud auth application-default login
 
 .PHONY: up
 up:
