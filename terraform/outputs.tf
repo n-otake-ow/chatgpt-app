@@ -1,3 +1,3 @@
 output "url" {
-  value = [for s in google_cloud_run_service.this.status : s.url]
+  value = google_cloud_run_v2_service.this.uri
 }
