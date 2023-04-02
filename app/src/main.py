@@ -76,8 +76,8 @@ def get_answer(language: str, word: str) -> str:
 
 
 def main() -> None:
-    st.title("言葉 GPT :book:")
-    st.write("言葉 GPT は、単語や熟語の意味を教えてくれる辞書アプリです。")
+    st.title("辞書 GPT :book:")
+    st.write("辞書 GPT は、単語や熟語の意味を教えてくれる辞書アプリです。")
     available_languages = (
         "フランス語",
         "ドイツ語",
