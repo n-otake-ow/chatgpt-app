@@ -4,7 +4,7 @@ import openai
 
 
 # NOTE: set True for local development
-DEBUG_MODE = False
+DEBUG_MODE = os.environ.get("DEBUG_MODE", False)
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
@@ -76,14 +76,15 @@ def get_answer(language: str, word: str) -> str:
 
 
 def main() -> None:
-    st.title("辞書 GPT :book:")
-    st.write("辞書 GPT は、単語や熟語の意味を教えてくれる辞書アプリです。")
+    st.title("Chat 辞書 GPT :book:")
+    st.write("Chat 辞書 GPT は、単語や熟語の意味を教えてくれる辞書アプリです。")
     available_languages = (
         "フランス語",
         "ドイツ語",
         "イタリア語",
         "スペイン語",
-        "英語"
+        "英語",
+        "日本語",
     )
 
     language = st.radio("", available_languages)
