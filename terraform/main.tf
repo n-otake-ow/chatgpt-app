@@ -24,7 +24,7 @@ resource "google_secret_manager_secret_version" "this" {
 
 resource "google_service_account" "this" {
   account_id   = "${local.app.name}-sa"
-  display_name = "Service Account for accessing BigQuery"
+  display_name = "Service Account for the app"
 }
 
 resource "google_secret_manager_secret_iam_member" "this" {
