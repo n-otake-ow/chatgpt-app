@@ -6,6 +6,13 @@ This directory contains the source code and Dockerfile for the application.
 
 - Docker
 
+## Configuration
+
+- Copy the following `*.tpl` files and create `*` files (for example, execute `cp .env.tpl .env`), and fill in the values according to your environment.
+  - `./.env.tpl`
+  - `./.docker/.env.tpl`
+  - `./src/.streamlit/secrets.toml.tpl`
+
 ## Usage
 
 ### Running the application locally
