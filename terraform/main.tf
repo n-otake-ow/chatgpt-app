@@ -96,6 +96,12 @@ resource "google_cloud_run_service_iam_policy" "public" {
   policy_data = data.google_iam_policy.public.policy_data
 }
 
+resource "google_project_iam_member" "bq" {
+  project = google_bigquery_table.query_log.project
+  role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.this.email}"
+}
+
 resource "google_bigquery_dataset" "this" {
   dataset_id = replace(local.app.name, "-", "_")
   location   = var.location
