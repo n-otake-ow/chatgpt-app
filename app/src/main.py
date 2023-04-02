@@ -93,7 +93,6 @@ def main() -> None:
 
     if st.button("質問する"):
         answer = get_answer(language, word)
-        st.write(":teacher: <")
         st.write(answer)
         st.write("---")
         st.write("コピペ用")
