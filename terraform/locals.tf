@@ -5,7 +5,7 @@ locals {
 
   secrets = [
     {
-      name  = "openai_api_key"
+      name  = "OPENAI_API_KEY"
       value = var.openai_api_key
     },
   ]
