@@ -1,13 +1,12 @@
 terraform {
   required_version = "~> 1.4.0"
 
-  backend "s3" {
+  backend "gcs" {
     # run below command to configure backend
     # $ terraform init \
     #   -backend-config="bucket=yourbucket" \
-    #   -backend-config="key=path/to/terraform.tfstate" \
-    #   -backend-config="region=ap-northeast-1" \
-    #   -backend-config="encrypt=true"
+    #   -backend-config="prefix=path/to/terraform.tfstate" \
+    #   -backend-config="credentials=./credentials/yourcreds.json"
   }
 
   required_providers {

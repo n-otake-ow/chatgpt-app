@@ -27,6 +27,9 @@ resource "google_secret_manager_secret_iam_member" "this" {
   secret_id = each.key
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  depends_on = [
+    google_secret_manager_secret.this,
+  ]
 }
 
 resource "google_cloud_run_v2_service" "this" {
@@ -63,6 +66,10 @@ resource "google_cloud_run_v2_service" "this" {
       "autoscaling.knative.dev/maxScale" = "5"
     }
   }
+
+  depends_on = [
+    google_secret_manager_secret_iam_member.this,
+  ]
 }
 
 data "google_iam_policy" "public" {
