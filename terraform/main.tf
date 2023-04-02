@@ -94,3 +94,90 @@ resource "google_cloud_run_service_iam_policy" "public" {
 
   policy_data = data.google_iam_policy.public.policy_data
 }
+
+resource "google_bigquery_dataset" "this" {
+  dataset_id = replace(local.app.name, "-", "_")
+  location   = var.location
+}
+
+resource "google_bigquery_table" "query_log" {
+  dataset_id          = google_bigquery_dataset.this.dataset_id
+  table_id            = "query_log"
+  deletion_protection = true
+
+  schema = jsonencode([
+    {
+      name = "language"
+      type = "STRING"
+    },
+    {
+      name = "word"
+      type = "STRING"
+    },
+    {
+      name = "id"
+      type = "STRING"
+    },
+    {
+      name = "object"
+      type = "STRING"
+    },
+    {
+      name = "created"
+      type = "TIMESTAMP"
+    },
+    {
+      name = "choices"
+      type = "RECORD"
+      mode = "REPEATED"
+      fields = [
+        {
+          name = "index"
+          type = "INTEGER"
+          mode = "NULLABLE"
+        },
+        {
+          name = "message"
+          type = "RECORD"
+          fields = [
+            {
+              name = "role"
+              type = "STRING"
+            },
+            {
+              name = "content"
+              type = "STRING"
+            },
+          ]
+        },
+        {
+          name = "finish_reason"
+          type = "STRING"
+        },
+
+      ]
+    },
+    {
+      name = "usage"
+      type = "RECORD"
+      fields = [
+        {
+          name = "prompt_tokens"
+          type = "INTEGER"
+        },
+        {
+          name = "completion_tokens"
+          type = "INTEGER"
+        },
+        {
+          name = "total_tokens"
+          type = "INTEGER"
+        }
+      ]
+    },
+  ])
+
+  depends_on = [
+    google_bigquery_dataset.this,
+  ]
+}
