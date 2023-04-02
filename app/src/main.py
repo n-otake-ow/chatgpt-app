@@ -4,7 +4,7 @@ import openai
 
 
 # NOTE: set True for local development
-DEBUG_MODE = os.environ.get("DEBUG_MODE", False)
+DEBUG_MODE = os.environ.get("DEBUG_MODE", False) == "True"
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 
