@@ -109,7 +109,8 @@ def speak(input_text: str) -> None:
     )
 
     audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3
+        audio_encoding=texttospeech.AudioEncoding.MP3,
+        speaking_rate=1.1,
     )
 
     response: texttospeech.SynthesizeSpeechResponse = client.synthesize_speech(

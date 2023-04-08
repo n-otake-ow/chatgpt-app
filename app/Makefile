@@ -32,6 +32,12 @@ push:
 	@docker push $(IMAGE_URL):latest
 	@docker push $(IMAGE_URL):$(COMMIT_HASH)
 
+.PHONY: prune
+prune:
+	gcloud artifacts docker images list "asia-northeast1-docker.pkg.dev/promising-haiku-204015/chatgpt-app" --include-tags --filter="NOT tags~latest" \
+	| awk '{print $1 ":" $3}' \
+	| xargs -I {} gcloud artifacts docker images delete {} 2>/dev/null
+
 .PHONY: deploy
 deploy:
 	gcloud run deploy $(SERVICE_NAME) --image $(IMAGE_URL) --region $(LOCATION)

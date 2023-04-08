@@ -66,7 +66,7 @@ resource "google_cloud_run_v2_service" "this" {
       dynamic "env" {
         for_each = { for s in local.secrets : s.name => s.value }
         content {
-          name = env.key
+          name = split("__", env.key)[1]
           value_source {
             secret_key_ref {
               version = "latest"

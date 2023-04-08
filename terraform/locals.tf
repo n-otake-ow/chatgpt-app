@@ -12,7 +12,7 @@ locals {
 
   secrets = [
     {
-      name  = "OPENAI_API_KEY"
+      name  = "${local.app.name}__OPENAI_API_KEY"
       value = var.openai_api_key
     },
   ]

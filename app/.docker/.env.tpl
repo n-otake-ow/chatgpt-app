@@ -1,4 +1,4 @@
-GCLOUD_PROJECT=xxx
+GCLOUD_PROJECT=xxx  # If you set FEATURE_FLAG_GCLOUD=False, you can ignore this
 OPENAI_API_KEY=xxx
 DEBUG_MODE=True
 FEATURE_FLAG_GCLOUD=False
