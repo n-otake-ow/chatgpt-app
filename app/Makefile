@@ -7,6 +7,15 @@ IMAGE_URL := $(GAR_HOST)/$(PROJECT_ID)/$(SERVICE_NAME)/$(SERVER_IMAGE_NAME)
 .DEFAULT_GOAL   := help
 
 
+.PHONY: lint
+lint:
+	@flake8 src/
+
+.PHONY: fmt
+fmt:
+	@black src/
+	@flake8 src/
+
 .PHONY: build
 build:
 	$(eval COMMIT_HASH := $(shell git rev-parse HEAD | cut -c 1-7))

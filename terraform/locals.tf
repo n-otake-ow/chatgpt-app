@@ -3,6 +3,13 @@ locals {
     name = "chatgpt-app"
   }
 
+  envvars = [
+    {
+      name  = "GCLOUD_PROJECT"
+      value = var.project_id
+    },
+  ]
+
   secrets = [
     {
       name  = "OPENAI_API_KEY"

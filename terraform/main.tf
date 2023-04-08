@@ -54,6 +54,15 @@ resource "google_cloud_run_v2_service" "this" {
           memory = "512Mi"
         }
       }
+
+      dynamic "env" {
+        for_each = { for e in local.envvars : e.name => e.value }
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+
       dynamic "env" {
         for_each = { for s in local.secrets : s.name => s.value }
         content {
@@ -99,6 +108,12 @@ resource "google_cloud_run_service_iam_policy" "public" {
 resource "google_project_iam_member" "bq" {
   project = google_bigquery_table.query_log.project
   role    = "roles/bigquery.admin"
+  member  = "serviceAccount:${google_service_account.this.email}"
+}
+
+resource "google_project_iam_member" "speech" {
+  project = var.project_id
+  role    = "roles/speech.editor"
   member  = "serviceAccount:${google_service_account.this.email}"
 }
 
