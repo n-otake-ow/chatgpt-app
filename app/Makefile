@@ -64,7 +64,7 @@ down:
 clean: down up
 
 .PHONY: logs
-log:
+logs:
 	docker compose -f .docker/docker-compose.yml logs -f || true
 
 .PHONY: login-app
