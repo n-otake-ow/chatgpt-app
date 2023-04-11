@@ -4,6 +4,7 @@ SERVICE_NAME := chatgpt-app
 SERVER_IMAGE_NAME := app
 PROJECT_ID := $(shell gcloud config get-value project)
 IMAGE_URL := $(GAR_HOST)/$(PROJECT_ID)/$(SERVICE_NAME)/$(SERVER_IMAGE_NAME)
+COMMIT_HASH := $(shell git rev-parse --short HEAD)
 .DEFAULT_GOAL   := help
 
 
@@ -18,8 +19,7 @@ fmt:
 
 .PHONY: build
 build:
-	$(eval COMMIT_HASH := $(shell git rev-parse HEAD | cut -c 1-7))
-	DOCKER_BUILDKIT=1 docker build \
+	docker build \
 		-f .docker/Dockerfile \
 		-t $(SERVICE_NAME) \
 		-t $(IMAGE_URL):latest \
@@ -28,7 +28,6 @@ build:
 
 .PHONY: push
 push:
-	$(eval COMMIT_HASH := $(shell git rev-parse HEAD | cut -c 1-7))
 	@docker push $(IMAGE_URL):latest
 	@docker push $(IMAGE_URL):$(COMMIT_HASH)
 
@@ -59,25 +58,14 @@ up:
 
 .PHONY: down
 down:
-	docker compose -f .docker/docker-compose.yml down --remove-orphans
+	docker compose -f .docker/docker-compose.yml down
 
 .PHONY: clean
 clean: down up
 
-.PHONY: log
+.PHONY: logs
 log:
 	docker compose -f .docker/docker-compose.yml logs -f || true
-
-.PHONY: start
-start:
-	docker compose -f .docker/docker-compose.yml start
-
-.PHONY: stop
-stop:
-	docker compose -f .docker/docker-compose.yml stop
-
-.PHONY: restart
-restart: stop start
 
 .PHONY: login-app
 login-app:
