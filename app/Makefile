@@ -34,7 +34,7 @@ push:
 
 .PHONY: prune
 prune:
-	gcloud artifacts docker images list "asia-northeast1-docker.pkg.dev/$(PROJECT_ID)/$(SERVICE_NAME)" --include-tags --filter="NOT tags~latest" \
+	gcloud artifacts docker images list "$(GAR_HOST)/$(PROJECT_ID)/$(SERVICE_NAME)" --include-tags --filter="NOT tags~latest" \
 	| awk '{print $$1 ":" $$3}' \
 	| xargs -I {} gcloud artifacts docker images delete {} 2>/dev/null
 
