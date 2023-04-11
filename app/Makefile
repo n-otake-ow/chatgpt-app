@@ -35,7 +35,7 @@ push:
 .PHONY: prune
 prune:
 	gcloud artifacts docker images list "asia-northeast1-docker.pkg.dev/promising-haiku-204015/chatgpt-app" --include-tags --filter="NOT tags~latest" \
-	| awk '{print $1 ":" $3}' \
+	| awk '{print $$1 ":" $$3}' \
 	| xargs -I {} gcloud artifacts docker images delete {} 2>/dev/null
 
 .PHONY: deploy
