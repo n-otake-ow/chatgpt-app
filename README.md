@@ -2,6 +2,8 @@
 
 **This is a repository I created as a hobby project. I cannot take responsibility for any issues caused by the applications created from this repository.**
 
+![demo](images/demo.gif)
+
 This project contains the infrastructure code in `terraform/` directory and the application code in `app/` directory.
 
 ## Terraform
